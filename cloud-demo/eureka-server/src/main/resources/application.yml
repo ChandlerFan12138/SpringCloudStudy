@@ -1,0 +1,14 @@
+server:
+  port: 10089
+
+#下面两步相当于对服务进行注册
+#eureka的名字
+spring:
+  application:
+    name: eurekaserver
+
+#eureka的地址信息，会把自己也注册到eureka上
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10089/eureka
