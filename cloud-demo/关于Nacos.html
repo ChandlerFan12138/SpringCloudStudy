@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>$Title$</title>
+</head>
+<body>
+<p>nacos和Eureka一样都是注册中心，但是他比Eureka的功能要多，首先nacos的启动和Eureka不太一样，他是相当于一个外部的app，需要通过外部指令启动</p>
+<p>他的实现步骤是：（1）首先要在父工程里面插入alibaba集成的依赖；（2）然后在子工程中插入alibaba-nacos依赖；（3）子工程中配置端口，并修改负载均衡的规则</p>
+<p>首先要注意Nacos的服务分级储存模型，一级是服务：userService；二级是集群，比如是上海集群，杭州集群；三级是实例，比如端口为8083的user-service</p>
+<p>Nacos还可以用来做权重负载均衡，在Nacos网页对各个服务端口可以赋予权重，这样子在调用服务时候，就会根据权重来选择服务了</p>
+<p>不仅如此，Nacos还可以用来做环境隔离，也就是说可以在Nacos里面创建不同的命名空间，然后在yml配置文件里面做namespace的编辑，这样子可以根据
+不同的环境测试不同的配置</p>
+<p>那Nacos和Eureka相比，自然是有些进步的，比如：添加了非临时实例，可以得到Nacos更多的关照，并且Nacos还会主动向服务消费者推送关于
+服务提供者的变更消息，帮助服务列表缓存更新</p>
+</body>
+</html>

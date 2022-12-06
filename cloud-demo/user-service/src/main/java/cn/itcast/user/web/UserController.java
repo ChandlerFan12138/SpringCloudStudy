@@ -34,12 +34,14 @@ public class UserController {
      */
 
     @GetMapping("now")
-    public String now(){
+    public String now(@RequestHeader(value = "Truth", required = false) String truth){
+        System.out.println(truth);
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));
     }
 
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id) {
+    public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) {
+        System.out.println("truth: "+ truth);
         return userService.queryById(id);
     }
 }

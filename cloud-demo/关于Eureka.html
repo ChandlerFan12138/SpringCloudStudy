@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eureka</title>
+</head>
+<body>
+<p>关于Eureka-服务端（自身）的使用，首先得创建Maven工程在Pom文件中引入Eureka-server的配置文件；由于父工程中已经引入了SpringCloud的相关组件信息，
+    所以无需再指定版本等信息；第二需要创建main函数，并添加SpringBootApplication和EnableEureka的注解；
+    最后需要在yml文件中添加端口，服务名称以及默认的url等信息。</p>
+<p>
+    Eureka客户端的使用，首先需要在客户端pom文件里面添加Client配置文件，然后将服务注册到Eureka中，需要在appplication里面添加@EnableEurekaClient注解，
+请注意，如果添加的配置文件如果是Client，有可能不需要Application里面的注解。然后在yml配置文件里面添加默认URL的信息，将自己注册到Eureka中。
+</p>
+<p>
+    如果有多个客户端提供相同服务，就会涉及到哪个client提供服务的问题了，这时候就涉及到负载均衡了，因为Eureka客户端提供了一个Ribbon负载均衡器，我们一般会在
+Application类里面加入一个RestTemplate的Bean用来发送请求，然后在上面加入@LoadBalanced就可以用来实现负载均衡了。</p>
+<p>
+    轮询调度的实现原理是内部配置了一个拦截器，会拦截请求，LoadBalancerInterceptor implements ClientHttpRequestInterceptor，然后交给DynamicServerListLoadClient，得到服务器列表之后，会去交给内部的IRule方法做负载均衡，
+    一般是根据地区筛选，然后轮询调度。
+</p>
+<P>什么是Ribbon的饥饿加载，因为只有客户端在第一次启动时，才会创建LoadBalancerClient，耗费的时间是非常长的，我们就可以选择饥饿加载，在配置文件里面修改成项目已启动就
+    加载，这样可以避免问题。</P>
+
+</body>
+</html>
