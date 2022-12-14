@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Gateway的功能包括：身份验证，权限校验，限流，服务路由，还有负载均衡</p>
+<p>我们需要了解一下什么是Servlet：Servlet technology is used to create a web application (resides at server side and generates a dynamic web page).</p>
+<p>阻塞API和非阻塞API的区别：阻塞API指的是当前线程调用远程接口时，如果远程资源暂时不能使用，当前线程会被挂起，等待远程资源的响应，直到响应完成，
+    后续代码才会继续执行。非阻塞API则与之相反。我们看一个简单的使用Rest API的例子，将Controller，Service，Dao层的方法都设计成ComplateableFuture
+    并加上了@ASync方法，这样的的话，在执行分段任务时：会有不同的线程去做一个线程本来要做的事，这样就可以大大减少所需要的时间。https://vimalma1093.medium.com/java-springboot-blocking-vs-non-blocking-rest-api-implementation-fe5643840287</p>
+<p>Gateway和Zuul的区别：Gateway的线程开销少，支持异步，并支持各种长连接，websocket等。相比Zuul，他还能实行限流，负载均衡等等（Websocket和HTTP区别见GN6）</p>
+<p>使用时需要在Gateway包下面首先导入Nacos的discovery依赖和网关的Gateway依赖，然后创建一个Application类</p>
+<p>对于Gateway的路由工作: 除了基本的配置，还需要将routes中的id, uri, predicates, filters设置好。他的原理就是：请求会发送到Gateway，由gateway再路由到不同的
+微服务，Gateway里面有断言操作。具体来说就是用户通过URL请求之后：（1）先由路由规则判断得到路由的目标地址；（2）然后GateWay从Nacos注册中心拉取服务列表；（3）通过负载均衡
+得到对应的服务</p>
+<p>请注意Spring提供11种基本的Predicate工厂（断言工厂），具体可见GN4，最常用的是Path，就是请求路径必须符合制定规则。</p>
+<p>GateWay提供了很多内置的WebFilter工厂，允许GateWay在HTTP请求在真正到达代理服务之前与之互动，并能干涉返回给客户端的HTTP responses</p>
+<p>不仅如此，Gateway还提供了很多内置的Web Filter，比如我们可以使用过滤器添加HTTP的请求头，请求体，并且对请求头和请求体做出一定的处理。过滤器有三种：当前服务的过滤器，
+默认过滤器和全局过滤器，他的执行顺序依次是：DefaultFilter>CurrentServiceFilter>GlobalFilter</p>
+<p>GlobalFilter不是通过在yml文件种配置生效，而是在GateWay包下面，创建一个类继承GlobalFilter来生效实现，见具体类种有介绍，但是请注意，GlobalFilter上可以添加
+@Order注解来干涉他的执行顺序。当值为-1时，甚至要先于DefaultFilter执行。我们用GlobalFilter可以做用户权限检验，比如当用户不是Admin，那我们就不允许访问某个微服务。</p>
+</body>
+</html>

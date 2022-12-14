@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Feign是一个声明式的Http客户端，是用来代替RestTemplate的远程调用的。</p>
+<p>那么如何使用Feign呢？（1）提取Feign做一个单独module：Feign-api，引入需要的起步依赖 ；（2）首先需要在子工程中导入Feign-api的依赖；（3）然后在Application中添加EnableFeignClients的注解； （3）然后创建Feign
+    工程包，在clients里面创建UserClient接口，作用是代理其他微服务发userService的Http请求；（4）最后在orderService里面调用UserClient的Bean，使用相关方法就可以了</p>
+<p>我们也可以自定义Feign的配置，比如可以修改Feign的日志级别，那实现的方式有两种：（1）一种是修改yaml配置文件；（2）另外一种是建立一个Feign的Logger.level.basic
+的Bean，然后给他放在@EnableFeignClients的注解里面@EnableFeignClients（这里可以设置value,defaultConfiguration = FeignClientConfiguration.class）</p>
+<p>但是我们知道Feign是发送Http请求的，需要三次握手建立连接，这样是很耗费资源的，所以我们可以使用连接池，底层实现是可以使用连接池的，具体做法是：在子项目</p>
+</body>
+</html>
